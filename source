@@ -1,0 +1,95 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include<stdio.h>
+#include<stdlib.h>
+#include <time.h>
+
+int buzzer = 7;
+int trig = 8;
+int echo = 9; 
+int melody[] = {523, 587, 659, 698, 784, 880, 988, 1046};
+
+
+float duration;
+float distance;
+int test;
+
+void file_create()
+{
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+    FILE* fp;
+    fopen_s(&fp, "Detection_Logging.txt", "a+");
+
+    fprintf(fp, "Detection: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+    return 0;
+}
+
+void setup() {
+  pinMode(buzzer, OUTPUT);
+  pinMode(trig, OUTPUT);
+  pinMode(echo, INPUT);
+
+}
+
+void loop() {
+  digitalWrite(trig, HIGH);
+  delay(10);
+  digitalWrite(trig, LOW);
+
+  //echo이 HIGH를 유지한 시간을 저장
+  duration = pulseIn(echo, HIGH);
+
+  distance = ((340 * duration) / 10000) / 2;
+
+  if(distance >= 0 && distance < 10){
+    tone(buzzer, melody[0], 400);  
+    delay(1000);
+    file_create();
+  }
+
+  else if(distance >= 10 && distance < 20){
+    tone(buzzer, melody[1], 400);   
+    delay(1000);
+    file_create();   
+  }
+
+  else if(distance >= 20 && distance < 30){
+    tone(buzzer, melody[2], 400);  
+    delay(1000);
+    file_create();
+  }
+
+  else if(distance >= 30 && distance < 40){
+    tone(buzzer, melody[3], 400);   
+    delay(1000);
+    file_create();
+  }
+
+  else if(distance >= 40 && distance < 50){
+    tone(buzzer, melody[4], 400);   
+    delay(1000);
+    file_create();
+  }
+
+  else if(distance >= 50 && distance < 60){
+    tone(buzzer, melody[5], 400);   
+    delay(1000);
+    file_create();
+  }
+
+  else if(distance >= 60 && distance < 70){
+    tone(buzzer, melody[6], 400);  
+    delay(1000);
+    file_create();
+  }
+
+  else if(distance >= 70 && distance < 80){
+    tone(buzzer, melody[7], 400);  
+    delay(1000);
+    file_create();
+  }
+  noTone(50);
+}
